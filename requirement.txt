@@ -1,7 +1,0 @@
-pandas
-matplotlib
-seaborn
-numpy
-streamlit
-babel
-altair==4.0
