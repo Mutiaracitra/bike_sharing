@@ -1,6 +1,7 @@
-matplotlib==3.9.12
-numpy==1.25.2
-pandas==2.1.4
-seaborn==0.13.0
-streamlit==1.26.0
-python==3.9.12
+pandas
+matplotlib
+seaborn
+numpy
+streamlit
+babel
+altair==4.0
