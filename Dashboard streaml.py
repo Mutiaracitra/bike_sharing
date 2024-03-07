@@ -2,130 +2,192 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import streamlit as st
 
-#create_day_df()
-st.subheader("Season")
+sns.set(style="dark")
+
+all_df = pd.read_csv('day.csv')
+datetime_columns = ["datetime"]
+all_df.sort_values(by="datetime", inplace=True)
+all_df.reset_index(inplace=True)
  
-fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(35, 15))
- 
-colors = ["#90CAF9", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
- 
-sns.barplot(x="quantity_x", y="product_name", data=day_df.head(5), palette=colors, ax=ax[0])
-ax[0].set_ylabel(None)
-ax[0].set_xlabel("Number of Sales", fontsize=30)
-ax[0].set_title("Best Performing Product", loc="center", fontsize=50)
-ax[0].tick_params(axis='y', labelsize=35)
-ax[0].tick_params(axis='x', labelsize=30)
- 
-sns.barplot(x="quantity_x", y="product_name", data=day_df.sort_values(by="quantity_x", ascending=True).head(5), palette=colors, ax=ax[1])
-ax[1].set_ylabel(None)
-ax[1].set_xlabel("Number of Sales", fontsize=30)
-ax[1].invert_xaxis()
-ax[1].yaxis.set_label_position("right")
-ax[1].yaxis.tick_right()
-ax[1].set_title("Worst Performing Product", loc="center", fontsize=50)
-ax[1].tick_params(axis='y', labelsize=35)
-ax[1].tick_params(axis='x', labelsize=30)
+for column in datetime_columns:
+    all_df[column] = pd.to_datetime(all_df[column])
+
+min_date = all_df["datetime"].min()
+max_date = all_df["datetime"].max()
+
+with st.sidebar:
+    st.title("Dashboard", )
+    st.image("dashboard/Logo.png", width=300, use_column_width=True)
+
+    start_date, end_date = st.date_input(
+        "Select date range",
+        [min_date, max_date]
+    )
+
+    st.selectbox("Select a station", all_df["station"].unique())
+
+st.header('PRSA Water Quality :sparkles:')
+
+# Water Quality Over Time
+st.subheader('Overall Water Quality')
+
+col1, col2 = st.columns(2)
+
+with col1:
+    overall_quality = round(all_df["Overall_Air_Quality"].max(), 1)
+    st.metric("Rata-rata partikel Tertinggi (Buruk)", value=overall_quality)
+
+with col2:
+    overall_quality = round(all_df["Overall_Air_Quality"].min(), 1)
+    st.metric("Rata-rata partikel Terendah (Bagus)", value=overall_quality)
+    
+fig, ax = plt.subplots(figsize=(16, 8))
+ax.plot(
+    all_df["datetime"],
+    all_df["Overall_Air_Quality"],
+    marker='o', 
+    linewidth=2,
+    color="#90CAF9"
+)
+ax.tick_params(axis='y', labelsize=20)
+ax.tick_params(axis='x', labelsize=15)
  
 st.pyplot(fig)
 
+# Water Quality by City
+st.subheader('Overall City Water Quality')
+fig, ax = plt.subplots(figsize=(16, 8))
+colors = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+sns.barplot(
+    y = "Overall_Air_Quality",
+    x = "station",
+    data = all_df.sort_values(by="Overall_Air_Quality", ascending=True),
+    palette = colors,
+    legend = True,
+    ci=None,
+    ax=ax
+)
 
-import matplotlib.pyplot as plt
+ax.set_title("Water Quality in China", fontsize=20)
+ax.set_ylabel(None)
+ax.set_xlabel(None)
+ax.tick_params(axis='x', labelsize=12)
+st.pyplot(fig)
 
-# Data
-dteday = [1, 2, 3, 4, 5, 6, 7]  
-cnt = [4504, 3656, 848, 1234, 5678, 9012, 3456]  
+# Rainfall and Preesure Analysis
+st.subheader('Rainfall and Temperature Analysis')
 
-# Plot
-plt.figure(figsize=(10, 6))
-plt.plot(dteday, cnt, marker='o', linestyle='-')
-plt.title('Tren Penggunaan Sepeda Seiring Waktu')
-plt.xlabel('Tanggal (dteday)')
-plt.ylabel('Jumlah Sepeda (cnt)')
-plt.grid(True)
-plt.xticks(dteday)  
-plt.tight_layout()
-plt.show()
+col1, col2 = st.columns(2)
+
+with col1:
+    fig, ax = plt.subplots(figsize=(16, 8))
+    sns.barplot(
+        y = "RAIN",
+        x = "year",
+        data = all_df,
+        hue= "station",
+        legend = True,
+        ax=ax,
+        ci=None
+    )
+
+    ax.set_title("Rainfall Analysis", fontsize=20)
+    ax.set_ylabel(None)
+    ax.set_xlabel(None)
+    ax.tick_params(axis='x', labelsize=12)
+    st.pyplot(fig)
+
+with col2:
+    fig, ax = plt.subplots(figsize=(16, 8))
+    sns.barplot(
+        y = "TEMP",
+        x = "year",
+        data = all_df,
+        hue = "station",
+        legend = True,
+        ax=ax,
+        ci=None
+    )
+
+    ax.set_title("Temperature Analysis", fontsize=20)
+    ax.set_ylabel(None)
+    ax.set_xlabel(None)
+    ax.tick_params(axis='x', labelsize=12)
+    st.pyplot(fig)
 
 
-# ### Pertanyaan 2:
+# Dataframe Table
+st.subheader('Dataframe Table')
+st.dataframe(all_df[["station", "datetime", "PM2.5", "PM10", "SO2", "NO2", "CO", "O3", "Overall_Air_Quality"]], width=1000, height=500)
+    
+# Analisis lanjutan : Timeanalysis
+st.subheader('Time Analysis')
+all_df['datetime'] = pd.to_datetime(all_df['datetime'])
+all_df.set_index('datetime', inplace=True)
 
-# In[40]:
+col1, col2 = st.columns(2)
+
+with col1:
+    fig, ax = plt.subplots(figsize=(16, 8))
+    ax.plot(all_df['PM2.5'], color='blue')
+    ax.set_title('Time Series Plot of PM2.5')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('PM2.5 Level')
+    ax.grid(True)
+    st.pyplot(fig)
+    st.markdown("<h6 style='text-align: center;'>PM2.5 plot</h6>", unsafe_allow_html=True)
+
+    fig, ax = plt.subplots(figsize=(16, 8))
+    ax.plot(all_df['PM10'], color='purple')
+    ax.set_title('Time Series Plot of PM10')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('PM10 Level')
+    ax.grid(True)
+    st.pyplot(fig)
+    st.markdown("<h6 style='text-align: center;'>PM10 plot</h6>", unsafe_allow_html=True)
+    
+    fig, ax = plt.subplots(figsize=(16, 8))
+    ax.plot(all_df['SO2'], color='green')
+    ax.set_title('Time Series Plot of SO2')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('SO2 Level')
+    ax.grid(True)
+    st.pyplot(fig)
+    st.markdown("<h6 style='text-align: center;'>SO2 plot</h6>", unsafe_allow_html=True)
+
+with col2:
+    fig, ax = plt.subplots(figsize=(16, 8))
+    ax.plot(all_df['NO2'], color='orange')
+    ax.set_title('Time Series Plot of NO2')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('NO2 Level')
+    ax.grid(True)
+    st.pyplot(fig)
+    st.markdown("<h6 style='text-align: center;'>NO2 plot</h6>", unsafe_allow_html=True)
 
 
-import matplotlib.pyplot as plt
-import seaborn as sns
+    fig, ax = plt.subplots(figsize=(16, 8))
+    ax.plot(all_df['CO'], color='red')
+    ax.set_title('Time Series Plot of CO')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('CO Level')
+    ax.grid(True)
+    st.pyplot(fig)
+    st.markdown("<h6 style='text-align: center;'>CO plot</h6>", unsafe_allow_html=True)
 
-# Data
-seasons = ["Spring", "Summer", "Fall", "Winter"]
-cnt_by_season = [3152, 5956, 4776.5, 3662]  
-
-# Plot
-plt.figure(figsize=(8, 6))
-sns.boxplot(x="season", y="cnt", data=day_df)
-plt.title('Distribusi Penggunaan Sepeda Berdasarkan Musim')
-plt.xlabel('Musim')
-plt.ylabel('Jumlah Sepeda (cnt)')
-plt.xticks(range(4), seasons)  
-plt.grid(True)
-plt.tight_layout()
-plt.show()
-
-
-# In[5]:
+    fig, ax = plt.subplots(figsize=(16, 8))
+    ax.plot(all_df['O3'], color='black')
+    ax.set_title('Time Series Plot of O3')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('O3 Level')
+    ax.grid(True)
+    st.pyplot(fig)
+    st.markdown("<h6 style='text-align: center;'>O3 plot</h6>", unsafe_allow_html=True)
 
 
-#menampilkan dashboard sederhana
-import streamlit as st
-import pandas as pd
 
-# Baca data
-day_df = pd.read_csv("day.csv")
 
-# Tampilkan data
-st.write(day_df)
 
-# Tampilkan tren penggunaan sepeda berdasarkan waktu
-st.subheader("Tren Penggunaan Sepeda Berdasarkan Waktu")
-# Visualisasi tren penggunaan sepeda berdasarkan waktu (gunakan grafik garis, bar, dll.)
-# Contoh:
-# st.line_chart(day_df["dteday"], day_df["cnt"])
 
-# Analisis pola penggunaan sepeda berdasarkan musim
-st.subheader("Pola Penggunaan Sepeda Berdasarkan Musim")
-# Analisis pola penggunaan sepeda berdasarkan musim (gunakan visualisasi yang sesuai)
-# Contoh:
-# st.bar_chart(day_df.groupby("season")["cnt"].mean())
-seasons = ["Spring", "Summer", "Fall", "Winter"]
-cnt_by_season = [3152, 5956, 4776.5, 3662]  
-
-# Plot
-plt.figure(figsize=(8, 6))
-sns.boxplot(x="season", y="cnt", data=day_df)
-plt.title('Distribusi Penggunaan Sepeda Berdasarkan Musim')
-plt.xlabel('Musim')
-plt.ylabel('Jumlah Sepeda (cnt)')
-plt.xticks(range(4), seasons)  
-plt.grid(True)
-plt.tight_layout()
-plt.show()
-
-# Data
-dteday = [1, 2, 3, 4, 5, 6, 7]  
-cnt = [4504, 3656, 848, 1234, 5678, 9012, 3456]  
-
-# Plot
-plt.figure(figsize=(10, 6))
-plt.plot(dteday, cnt, marker='o', linestyle='-')
-plt.title('Tren Penggunaan Sepeda Seiring Waktu')
-plt.xlabel('Tanggal (dteday)')
-plt.ylabel('Jumlah Sepeda (cnt)')
-plt.grid(True)
-plt.xticks(dteday)  
-plt.tight_layout()
-plt.show()
-
-# ## Conclusion
-
-# - Conclution pertanyaan 1: Jumlah penggunaan sepeda bervariasi setiap hari, dengan puncak penggunaan terjadi pada hari ke-3 sekitar 8.000 sepeda dan penurunan drastis terjadi pada hari ke-6 hingga sekitar 1.000 sepeda, menunjukkan tren fluktuatif yang signifikan.
-# - Conclution pertanyaan 2: Distribusi penggunaan sepeda menunjukkan bahwa penggunaan sepeda paling banyak terjadi di musim semi dan paling sedikit terjadi di musim dingin. Hal ini mungkin disebabkan oleh faktor cuaca dan kondisi jalan.
