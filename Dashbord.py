@@ -12,7 +12,7 @@ import streamlit as st
 
 # In[37]:
 with st.sidebar:
-    st.title("Dashboard", )
+    st.title("Proyek Analisi Bike Dataset", )
     st.image("Logo.png", width=300, use_column_width=True)
 
 # Membaca data dari file CSV
