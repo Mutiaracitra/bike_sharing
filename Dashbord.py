@@ -63,11 +63,13 @@ st.pyplot(fig)
 # In[42]:
 st.markdown(
     """
-    # BIKE DATASET
-    Berdasakan grafik diatas dapat dilihat bahwa Tren penggunaan sepeda dari tahun 2011 hingga 2013 menunjukkan peningkatan keseluruhan, meskipun mengalami fluktuasi dan penurunan pada beberapa periode. Puncak penggunaan terjadi pada bulan Oktober 2012 dan September 2013. Terdapat pola musiman yang jelas, di mana penggunaan sepeda lebih tinggi selama musim panas dan musim gugur dibandingkan dengan musim dingin dan musim semi. Analisis pola penggunaan juga menunjukkan bahwa cuaca yang lebih hangat dan cerah berhubungan dengan peningkatan signifikan dalam penggunaan sepeda.
+    Berdasakan grafik diatas dapat dilihat bahwa selama rentang tahun 2011 hingga 2013, terjadi peningkatan yang konsisten dalam penggunaan sepeda menurut dataset Bike Sharing. Kenaikan tersebut cukup signifikan setiap tahunnya, mencerminkan minat yang terus meningkat dari masyarakat untuk menggunakan sepeda sebagai moda transportasi. Puncak penggunaan sepeda tercatat pada bulan Oktober 2012 dan September 2013, menunjukkan adanya periode tertentu di mana minat bersepeda mencapai titik tertinggi. Meskipun demikian, tidak terdapat tren musiman yang jelas dalam pola penggunaan sepeda, menandakan bahwa faktor-faktor lain mungkin turut memengaruhi fluktuasi tersebut selain musim.
+)
+st.markdown(
+    """
+    2. Apakah ada pola penggunaan sepeda yang berkorelasi dengan musim (season)?
     """
 )
-
 # Plot pola penggunaan sepeda yang berkorelasi dengan musim
 fig, ax = plt.subplots(figsize=(12, 6))
 sns.boxplot(x='season', y='instant', data=selected_data, ax=ax)
@@ -79,6 +81,10 @@ st.pyplot(fig)
 
 # In[ ]:
 
-
+st.markdown(
+    """
+    Berdasarkan gambar diatas dapat dilihat bahwa pola penggunaan sepeda dalam Bike Sharing Dataset menunjukkan variasi yang signifikan berdasarkan musim, musim panas menjadi periode dengan rata-rata penggunaan sepeda tertinggi, menandakan bahwa cuaca hangat dan cerah cenderung mendorong masyarakat untuk lebih banyak menggunakan sepeda. Sementara itu, musim semi dan musim gugur menunjukkan rata-rata penggunaan sepeda yang hampir sama, mencerminkan kestabilan aktivitas bersepeda di kedua musim tersebut. Sebaliknya, musim dingin memiliki rata-rata penggunaan sepeda terendah, menandakan bahwa cuaca yang lebih dingin dan kondisi jalan yang mungkin tidak sesuai dapat mengurangi minat masyarakat untuk bersepeda. Perbedaan yang cukup signifikan antara rata-rata penggunaan sepeda pada musim panas dan musim dingin menegaskan pengaruh kuat cuaca terhadap kegiatan bersepeda.
+    """
+)
 
 
