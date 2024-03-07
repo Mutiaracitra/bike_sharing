@@ -23,9 +23,10 @@ day_df.head()
 # In[38]:
 st.markdown(
     """
-    # My first app
+    # BIKE DATASET
+    st.image("Logo.png", width=300, use_column_width=True)
     Berdasakan Bike Dataset yang ada dapat menjawab 2 permasalahan dalam bentuk pertanyaan berikut:
-    1. Bagaimana tren penggunaan sepeda di sepanjang waktu (dalam instant atau dteday)?
+    1. Bagaimana tren penggunaan sepeda di sepanjang waktu?
     """
 )
 
