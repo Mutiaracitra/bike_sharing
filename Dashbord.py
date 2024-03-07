@@ -24,7 +24,6 @@ day_df.head()
 st.markdown(
     """
     # BIKE DATASET
-    st.image("Logo.png", width=300, use_column_width=True)
     Berdasakan Bike Dataset yang ada dapat menjawab 2 permasalahan dalam bentuk pertanyaan berikut:
     1. Bagaimana tren penggunaan sepeda di sepanjang waktu?
     """
@@ -62,7 +61,12 @@ st.pyplot(fig)
 
 
 # In[42]:
-
+st.markdown(
+    """
+    # BIKE DATASET
+    Berdasakan grafik diatas dapat dilihat bahwa Tren penggunaan sepeda dari tahun 2011 hingga 2013 menunjukkan peningkatan keseluruhan, meskipun mengalami fluktuasi dan penurunan pada beberapa periode. Puncak penggunaan terjadi pada bulan Oktober 2012 dan September 2013. Terdapat pola musiman yang jelas, di mana penggunaan sepeda lebih tinggi selama musim panas dan musim gugur dibandingkan dengan musim dingin dan musim semi. Analisis pola penggunaan juga menunjukkan bahwa cuaca yang lebih hangat dan cerah berhubungan dengan peningkatan signifikan dalam penggunaan sepeda.
+    """
+)
 
 # Plot pola penggunaan sepeda yang berkorelasi dengan musim
 fig, ax = plt.subplots(figsize=(12, 6))
