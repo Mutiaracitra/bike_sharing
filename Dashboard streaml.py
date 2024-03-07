@@ -4,20 +4,27 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #create_day_df()
-def create_day_df(df):
-    day_df = df.resample(rule='D', on='order_date').agg({
-        "instant": "nunique",
-        "season": "sum"
-    })
-    day_df = day_df.reset_index()
-    day_df.rename(columns={
-        "instant": "order_count",
-        "season": "revenue"
-    }, inplace=True)
-    
-    return day_df
-
-# ### Gathering Data
+st.subheader('Day')
+ 
+col1, col2 = st.columns(2)
+ 
+with col1:
+    total_orders = day_df.order_count.sum()
+    st.metric("Total orders", value=total_orders)
+ 
+with col2:
+    total_revenue = format_currency(day_df.revenue.sum(), "AUD", locale='es_CO') 
+    st.metric("Total Revenue", value=total_revenue)
+ 
+fig, ax = plt.subplots(figsize=(16, 8))
+ax.plot(
+    day_df["order_date"],
+    day_df["order_count"],
+    marker='o', 
+    linewidth=2,
+    color="#90CAF9"
+)
+ax.tick_params(axis='y', labelsize=20)
 
 # In[6]:
 
