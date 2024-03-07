@@ -65,11 +65,14 @@ st.markdown(
     """
     Berdasakan grafik diatas dapat dilihat bahwa selama rentang tahun 2011 hingga 2013, terjadi peningkatan yang konsisten dalam penggunaan sepeda menurut dataset Bike Sharing. Kenaikan tersebut cukup signifikan setiap tahunnya, mencerminkan minat yang terus meningkat dari masyarakat untuk menggunakan sepeda sebagai moda transportasi. Puncak penggunaan sepeda tercatat pada bulan Oktober 2012 dan September 2013, menunjukkan adanya periode tertentu di mana minat bersepeda mencapai titik tertinggi. Meskipun demikian, tidak terdapat tren musiman yang jelas dalam pola penggunaan sepeda, menandakan bahwa faktor-faktor lain mungkin turut memengaruhi fluktuasi tersebut selain musim.
 )
+
+
 st.markdown(
     """
-    2. Apakah ada pola penggunaan sepeda yang berkorelasi dengan musim (season)?
+    2. Apakah ada pola penggunaan sepeda yang berkorelasi dengan (season)?
     """
 )
+
 # Plot pola penggunaan sepeda yang berkorelasi dengan musim
 fig, ax = plt.subplots(figsize=(12, 6))
 sns.boxplot(x='season', y='instant', data=selected_data, ax=ax)
