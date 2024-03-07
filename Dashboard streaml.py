@@ -3,8 +3,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
-# ## Data Wrangling
+#create_day_df()
+def create_day_df(df):
+    day_df = df.resample(rule='D', on='order_date').agg({
+        "instant": "nunique",
+        "season": "sum"
+    })
+    day_df = day_df.reset_index()
+    day_df.rename(columns={
+        "instant": "order_count",
+        "season": "revenue"
+    }, inplace=True)
+    
+    return day_df
 
 # ### Gathering Data
 
