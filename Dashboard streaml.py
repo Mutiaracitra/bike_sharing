@@ -1,21 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# # Proyek Analisis Data: [Input Nama Dataset]
-# - **Nama:** [Mutiara Citra Sari]
-# - **Email:** [M184D4KX2704@bangkit.academy]
-# - **ID Dicoding:** [M184D4KX2704]
-
-# ## Menentukan Pertanyaan Bisnis
-
-# - Bagaimana tren penggunaan sepeda di sepanjang waktu (dalam instant atau dteday)?
-# - Apakah ada pola penggunaan sepeda yang berkorelasi dengan musim (season)?
-
-# ## Import Semua Packages/Library yang Digunakan
-
-# In[1]:
-
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
