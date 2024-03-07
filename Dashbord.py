@@ -21,7 +21,13 @@ day_df.head()
 
 
 # In[38]:
-
+st.markdown(
+    """
+    # My first app
+    Berdasakan Bike Dataset yang ada dapat menjawab 2 permasalahan dalam bentuk pertanyaan berikut:
+    1. Bagaimana tren penggunaan sepeda di sepanjang waktu (dalam instant atau dteday)?
+    """
+)
 
 # Memilih kolom yang ingin ditampilkan
 selected_columns = ['instant', 'dteday', 'season', 'holiday', 'weekday']
