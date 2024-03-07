@@ -4,216 +4,30 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 #create_day_df()
-st.subheader('Day')
+st.subheader("Season")
  
-col1, col2 = st.columns(2)
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(35, 15))
  
-with col1:
-    total_orders = day_df.order_count.sum()
-    st.metric("Total orders", value=total_orders)
+colors = ["#90CAF9", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
  
-with col2:
-    total_revenue = format_currency(day_df.revenue.sum(), "AUD", locale='es_CO') 
-    st.metric("Total Revenue", value=total_revenue)
+sns.barplot(x="quantity_x", y="product_name", data=day_df.head(5), palette=colors, ax=ax[0])
+ax[0].set_ylabel(None)
+ax[0].set_xlabel("Number of Sales", fontsize=30)
+ax[0].set_title("Best Performing Product", loc="center", fontsize=50)
+ax[0].tick_params(axis='y', labelsize=35)
+ax[0].tick_params(axis='x', labelsize=30)
  
-fig, ax = plt.subplots(figsize=(16, 8))
-ax.plot(
-    day_df["order_date"],
-    day_df["order_count"],
-    marker='o', 
-    linewidth=2,
-    color="#90CAF9"
-)
-ax.tick_params(axis='y', labelsize=20)
-
-# In[6]:
-
-
-day_df = pd.read_csv("day.csv")
-day_df.head()
-
-
-# In[7]:
-
-
-hour_df = pd.read_csv("hour.csv")
-hour_df.head()
-
-
-# ### Assessing Data
-
-# MENILAI DATA day_df
-
-# In[8]:
-
-
-#mengetahui tipe data
-day_df.info()
-
-
-# In[9]:
-
-
-#mengetahui missing value
-day_df.isna().sum()
-
-
-# Tidak terdapat missing value pada data
-
-# In[10]:
-
-
-#mengetahui duplikasi data
-print("Jumlah duplikasi: ", day_df.duplicated().sum())
-
-
-# Tidak terdapat duplikasi data pada day_df
-
-# In[11]:
-
-
-#pemeriksaan
-day_df.describe()
-
-
-# MENILAI DATA hour_df
-
-# In[12]:
-
-
-#mengetahui tipe data
-hour_df.info()
-
-
-# In[13]:
-
-
-#mengetahui missing value
-hour_df.isna().sum()
-
-
-# Tidak terdapat missing value pada data
-
-# In[15]:
-
-
-#mengetahui duplikasi data
-print("Jumlah duplikasi: ", hour_df.duplicated().sum())
-
-
-# Tidak terdapat duplikasi data pada hour_df
-
-# In[16]:
-
-
-#pemeriksaan
-hour_df.describe()
-
-
-# ### Cleaning Data
-
-# In[31]:
-
-
-import pandas as pd
-
-# Data
-data = {
-    "instant": [1, 2, 3, 4, 5],
-    "dteday": ["2011-01-01", "2011-01-02", "2011-01-03", "2011-01-04", "2011-01-05"],
-    "season": [1, 1, 1, 1, 1],
-    "yr": [0, 0, 0, 0, 0],
-    "mnth": [1, 1, 1, 1, 1],
-    "holiday": [0, 0, 0, 0, 0],
-    "weekday": [6, 0, 1, 2, 3],
-    "workingday": [0, 0, 1, 1, 1],
-    "weathersit": [2, 2, 1, 1, 1],
-    "temp": [0.344167, 0.363478, 0.196364, 0.2, 0.226957],
-    "atemp": [0.363625, 0.353739, 0.189405, 0.212122, 0.22927],
-    "hum": [0.805833, 0.696087, 0.437273, 0.590435, 0.436957],
-    "windspeed": [0.160446, 0.248539, 0.248309, 0.160296, 0.1869],
-    "casual": [331, 131, 120, 108, 82],
-    "registered": [654, 670, 1229, 1454, 1518],
-    "cnt": [985, 801, 1349, 1562, 1600]
-}
-
-# Membuat DataFrame
-df = pd.DataFrame(data)
-
-# Membersihkan data pada musim spring (season = 1)
-spring_df = df[df["season"] == 1].copy()
-Q1 = spring_df["cnt"].quantile(0.25)
-Q3 = spring_df["cnt"].quantile(0.75)
-IQR = Q3 - Q1
-spring_df_cleaned = spring_df[(spring_df["cnt"] >= Q1 - 1.5 * IQR) & (spring_df["cnt"] <= Q3 + 1.5 * IQR)]
-
-# Membersihkan data pada musim winter (season = 4)
-winter_df = df[df["season"] == 4].copy()
-Q1 = winter_df["cnt"].quantile(0.25)
-Q3 = winter_df["cnt"].quantile(0.75)
-IQR = Q3 - Q1
-winter_df_cleaned = winter_df[(winter_df["cnt"] >= Q1 - 1.5 * IQR) & (winter_df["cnt"] <= Q3 + 1.5 * IQR)]
-
-# Gabungkan data yang telah dibersihkan
-cleaned_df = pd.concat([spring_df_cleaned, winter_df_cleaned])
-
-# Tampilkan hasil pembersihan
-print(cleaned_df)
-
-
-# ## Exploratory Data Analysis (EDA)
-
-# ### Explore ...
-
-# In[32]:
-
-
-day_df.describe(include="all")
-
-
-# In[33]:
-
-
-hour_df.describe(include="all")
-
-
-# In[34]:
-
-
-day_df.groupby(by="instant").instant.nunique().sort_values(ascending=False)
-day_df.groupby(by="dteday").instant.nunique().sort_values(ascending=False)
-
-
-# In[35]:
-
-
-day_df.groupby(by="instant").instant.nunique().sort_values(ascending=False)
-day_df.groupby(by="season").instant.nunique().sort_values(ascending=False)
-
-
-# In[36]:
-
-
-day_df.describe(include="all")
-
-
-# In[37]:
-
-
-day_df.groupby(by="dteday").instant.nunique().sort_values(ascending=False).reset_index().head(10)
-
-
-# In[38]:
-
-
-day_df.groupby(by="season").instant.nunique().sort_values(ascending=False).reset_index().head(10)
-
-
-# ## Visualization & Explanatory Analysis
-
-# ### Pertanyaan 1:
-
-# In[39]:
+sns.barplot(x="quantity_x", y="product_name", data=day_df.sort_values(by="quantity_x", ascending=True).head(5), palette=colors, ax=ax[1])
+ax[1].set_ylabel(None)
+ax[1].set_xlabel("Number of Sales", fontsize=30)
+ax[1].invert_xaxis()
+ax[1].yaxis.set_label_position("right")
+ax[1].yaxis.tick_right()
+ax[1].set_title("Worst Performing Product", loc="center", fontsize=50)
+ax[1].tick_params(axis='y', labelsize=35)
+ax[1].tick_params(axis='x', labelsize=30)
+ 
+st.pyplot(fig)
 
 
 import matplotlib.pyplot as plt
