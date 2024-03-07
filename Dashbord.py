@@ -69,7 +69,7 @@ st.markdown(
 
 st.markdown(
     """
-    2. Apakah ada pola penggunaan sepeda yang berkorelasi dengan (season)?
+    2. Adakah pola penggunaan sepeda yang bekoralasi dengan musim?
     """
 )
 
