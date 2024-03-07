@@ -282,7 +282,34 @@ st.subheader("Pola Penggunaan Sepeda Berdasarkan Musim")
 # Analisis pola penggunaan sepeda berdasarkan musim (gunakan visualisasi yang sesuai)
 # Contoh:
 # st.bar_chart(day_df.groupby("season")["cnt"].mean())
+seasons = ["Spring", "Summer", "Fall", "Winter"]
+cnt_by_season = [3152, 5956, 4776.5, 3662]  
 
+# Plot
+plt.figure(figsize=(8, 6))
+sns.boxplot(x="season", y="cnt", data=day_df)
+plt.title('Distribusi Penggunaan Sepeda Berdasarkan Musim')
+plt.xlabel('Musim')
+plt.ylabel('Jumlah Sepeda (cnt)')
+plt.xticks(range(4), seasons)  
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Data
+dteday = [1, 2, 3, 4, 5, 6, 7]  
+cnt = [4504, 3656, 848, 1234, 5678, 9012, 3456]  
+
+# Plot
+plt.figure(figsize=(10, 6))
+plt.plot(dteday, cnt, marker='o', linestyle='-')
+plt.title('Tren Penggunaan Sepeda Seiring Waktu')
+plt.xlabel('Tanggal (dteday)')
+plt.ylabel('Jumlah Sepeda (cnt)')
+plt.grid(True)
+plt.xticks(dteday)  
+plt.tight_layout()
+plt.show()
 
 # ## Conclusion
 
